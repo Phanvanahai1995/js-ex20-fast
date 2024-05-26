@@ -1,4 +1,4 @@
-import { ModalHtml, ModalItem } from "./components/Modal.js";
+import { Modal, ModalHtml } from "./components/Modal.js";
 import Todo from "./components/Todo.js";
 import { arrowDown, arrowRight } from "./ui/arrow.js";
 
@@ -168,16 +168,25 @@ root.addEventListener("click", function (e) {
   }
 
   if (e.target.classList.contains("btn-repair")) {
+    const value = e.target.parentElement.parentElement.parentElement.innerText;
+    const ModalItem = Modal();
+
     todo.insertAdjacentHTML("beforebegin", ModalItem);
     const id = +e.target.dataset.id;
     const key = e.target.dataset.key;
 
-    const modalItem = root.querySelector(".modal-item");
+    const modalItem = root.querySelector(".modal");
 
     const input = modalItem?.querySelector("input[type='text']");
+    input.value = value;
+
     const btnSave = modalItem?.querySelector(".save-btn_item");
 
     btnSave?.addEventListener("click", function (e) {
+      if (!input.value.trim()) {
+        alert("Vui lòng nhập dữ liệu");
+        return;
+      }
       const title = { id: id, title: input.value };
 
       sendRequestPatchData(
@@ -219,16 +228,25 @@ todoItemInnerSelected.addEventListener("click", function (e) {
   }
 
   if (e.target.classList.contains("btn-repair")) {
+    const value = e.target.parentElement.parentElement.parentElement.innerText;
+    const ModalItem = Modal();
+
     todo.insertAdjacentHTML("beforebegin", ModalItem);
     const id = +e.target.dataset.id;
     const key = e.target.dataset.key;
 
-    const modalItem = root.querySelector(".modal-item");
+    const modalItem = root.querySelector(".modal");
 
     const input = modalItem?.querySelector("input[type='text']");
+    input.value = value;
+
     const btnSave = modalItem?.querySelector(".save-btn_item");
 
     btnSave?.addEventListener("click", function (e) {
+      if (!input.value.trim()) {
+        alert("Vui lòng nhập dữ liệu");
+        return;
+      }
       const title = { id: id, title: input.value };
 
       sendRequestPatchData(
