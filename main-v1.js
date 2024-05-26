@@ -44,14 +44,22 @@ async function renderBtnCompleted() {
   if (!res.ok) throw new Error("Something went wrong");
 
   const data = await res.json();
+  let number = 0;
+  if (data === null) {
+    number = 0;
+    isActiveBtn = false;
+  } else {
+    const keys = Object.keys(data);
+    number = keys.length;
+  }
 
   const BtnHtml = `
       <button type="button" class="${
         isActiveBtn ? `bg-emerald-700` : `bg-gray-400`
       } hover:bg-gray-500 focus:ring-gray-100 mt-2.5 flex items-center gap-2 rounded-lg px-4 py-2.5 transition-all focus:outline-none focus:ring-4 btn-complete">
-        <span class="font-medium text-white span-element">Completed Todos ${
-          Object.keys(data).length
-        }</span>${isActiveBtn ? arrowDown : arrowRight}
+        <span class="font-medium text-white span-element">Completed Todos ${number}</span>${
+    isActiveBtn ? arrowDown : arrowRight
+  }
       </button>
   `;
 
@@ -78,52 +86,61 @@ btnInnerComplete.addEventListener("click", function (e) {
 
 async function getTodoItem(api, element, active) {
   try {
+    let html = "";
     const res = await fetch(api);
 
     if (!res.ok) throw new Error("Something went wrong");
 
     const data = await res.json();
 
-    if (data === null || data === undefined) return;
+    if (data === null) {
+      element.innerHTML = ``;
+      return;
+    }
 
     const keys = Object.keys(data);
 
-    let html = "";
-    for (const key of keys) {
-      html += `<div class="mt-2.5 flex w-full items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow">
-         <span class="font-normal text-gray-700">${(data[key].title =
-           data[key].title.includes("<") || data[key].title.includes(">")
-             ? data[key].title.replaceAll(/</g, "&lt;").replaceAll(/>/g, "&gt;")
-             : data[key].title)}</span>
-         <div class="flex gap-2">
-           <button
-             type="button"
-             class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-700 hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-300"
-           >
-            <i data-key=${key} class="btn-delete fa-regular fa-trash-can flex items-center justify-center"></i>
-           </button>
-           <button
-
-             type="button"
-             class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-           >
-           <i data-key=${key} data-id=${
-        data[key].id
-      } class="btn-repair fa-solid fa-pen-to-square flex items-center justify-center"></i>
-           </button>
-           <button
-             type="button"
-             class="btn-success ${
-               active ? `bg-emerald-700` : `bg-gray-400`
-             } flex h-10 w-10 items-center justify-center rounded-lg hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300"
-           >
-           <i data-title=${data[key].title} data-key=${key} data-id=${
-        data[key].id
-      } class="btn-success fa-regular fa-square-check flex items-center justify-center"></i>
-
-           </button>
-         </div>
-       </div>`;
+    if (keys.length === 0) {
+      html = "";
+    } else {
+      for (const key of keys) {
+        html += `<div class="mt-2.5 flex w-full items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow">
+           <span class="font-normal text-gray-700">${(data[key].title =
+             data[key].title.includes("<") || data[key].title.includes(">")
+               ? data[key].title
+                   .replaceAll(/</g, "&lt;")
+                   .replaceAll(/>/g, "&gt;")
+               : data[key].title)}</span>
+           <div class="flex gap-2">
+             <button
+               type="button"
+               class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-700 hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-300"
+             >
+              <i data-key=${key} class="btn-delete fa-regular fa-trash-can flex items-center justify-center"></i>
+             </button>
+             <button
+  
+               type="button"
+               class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+             >
+             <i data-key=${key} data-id=${
+          data[key].id
+        } class="btn-repair fa-solid fa-pen-to-square flex items-center justify-center"></i>
+             </button>
+             <button
+               type="button"
+               class="btn-success ${
+                 active ? `bg-emerald-700` : `bg-gray-400`
+               } flex h-10 w-10 items-center justify-center rounded-lg hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300"
+             >
+             <i data-title=${data[key].title} data-key=${key} data-id=${
+          data[key].id
+        } class="btn-success fa-regular fa-square-check flex items-center justify-center"></i>
+  
+             </button>
+           </div>
+         </div>`;
+      }
 
       element.innerHTML = html;
     }
@@ -209,7 +226,6 @@ root.addEventListener("click", function (e) {
   }
 
   if (e.target.classList.contains("btn-success")) {
-    console.log("ok");
     const title = e.target.parentElement.parentElement.parentElement.innerText;
     const key = e.target.dataset.key;
     sendRequestDeleteData(
