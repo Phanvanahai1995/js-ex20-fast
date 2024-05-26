@@ -84,6 +84,8 @@ async function getTodoItem(api, element, active) {
 
     const data = await res.json();
 
+    if (data === null || data === undefined) return;
+
     const keys = Object.keys(data);
 
     let html = "";
@@ -207,16 +209,17 @@ root.addEventListener("click", function (e) {
   }
 
   if (e.target.classList.contains("btn-success")) {
+    console.log("ok");
     const title = e.target.parentElement.parentElement.parentElement.innerText;
     const key = e.target.dataset.key;
-
-    sendRequestData(title, SEVER_API_SELECTED, todoItemInnerSelected, true);
     sendRequestDeleteData(
       key,
       "https://todo-3dd5f-default-rtdb.firebaseio.com/todos",
       todoItemInner,
       SERVER_API
     );
+    sendRequestData(title, SEVER_API_SELECTED, todoItemInnerSelected, true);
+
     renderBtnCompleted();
   }
 });

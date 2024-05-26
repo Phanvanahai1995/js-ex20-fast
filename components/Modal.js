@@ -24,7 +24,7 @@ export function Modal() {
                     <input required type="text" class="w-full bg-gray-50 p-4 rounded-lg border border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500" value="">
                 </div>
                 <div class="flex items-center justify-center space-x-8 p-4 rounded-b border-t border-gray-200">
-                    <button type="submit" class="save-btn rounded-lg bg-emerald-700 px-5 py-2.5 text-center font-medium text-white hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300 save-btn_item">Save</button>
+                    <button type="submit" class="rounded-lg bg-emerald-700 px-5 py-2.5 text-center font-medium text-white hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300 save-btn_item">Save</button>
                     <button type="button" class="bg-white px-5 py-2.5 rounded-lg border border-gray-200 font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 cancel-btn_item">Cancel</button>
                 </div>
             </div>
