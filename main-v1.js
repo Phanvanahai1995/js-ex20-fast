@@ -159,12 +159,13 @@ root.addEventListener("click", function (e) {
 
   if (e.target.classList.contains("btn-delete")) {
     const id = e.target.dataset.key;
-    sendRequestDeleteData(
-      id,
-      "https://todo-3dd5f-default-rtdb.firebaseio.com/todos",
-      todoItemInner,
-      SERVER_API
-    );
+    if (window.confirm("Are you sure???"))
+      sendRequestDeleteData(
+        id,
+        "https://todo-3dd5f-default-rtdb.firebaseio.com/todos",
+        todoItemInner,
+        SERVER_API
+      );
   }
 
   if (e.target.classList.contains("btn-repair")) {
@@ -224,12 +225,13 @@ todoItemInnerSelected.addEventListener("click", function (e) {
   e.stopPropagation();
   if (e.target.classList.contains("btn-delete")) {
     const key = e.target.dataset.key;
-    sendRequestDeleteData(
-      key,
-      "https://todo-3dd5f-default-rtdb.firebaseio.com/finished",
-      todoItemInnerSelected,
-      SEVER_API_SELECTED
-    );
+    if (window.confirm("Are you sure?"))
+      sendRequestDeleteData(
+        key,
+        "https://todo-3dd5f-default-rtdb.firebaseio.com/finished",
+        todoItemInnerSelected,
+        SEVER_API_SELECTED
+      );
   }
 
   if (e.target.classList.contains("btn-repair")) {
