@@ -89,42 +89,42 @@ async function getTodoItem(api, element, active) {
     let html = "";
     for (const key of keys) {
       html += `<div class="mt-2.5 flex w-full items-center justify-between bg-white p-4 rounded-lg border border-gray-200 shadow">
-     <span class="font-normal text-gray-700">${(data[key].title =
-       data[key].title.startsWith("<") && data[key].title.endsWith(">")
-         ? data[key].title.replace(/</g, "&lt;").replace(/>/g, "&gt;")
-         : data[key].title)}</span>
-     <div class="flex gap-2">
-       <button
-         type="button"
-         class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-700 hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-300"
-       >
-        <i data-key=${key} class="btn-delete fa-regular fa-trash-can flex items-center justify-center"></i>
-       </button>
-       <button
-       
-         type="button"
-         class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-       >
-       <i data-key=${key} data-id=${
+         <span class="font-normal text-gray-700">${(data[key].title =
+           data[key].title.includes("<") || data[key].title.includes(">")
+             ? data[key].title.replaceAll(/</g, "&lt;").replaceAll(/>/g, "&gt;")
+             : data[key].title)}</span>
+         <div class="flex gap-2">
+           <button
+             type="button"
+             class="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-700 hover:bg-rose-800 focus:outline-none focus:ring-4 focus:ring-rose-300"
+           >
+            <i data-key=${key} class="btn-delete fa-regular fa-trash-can flex items-center justify-center"></i>
+           </button>
+           <button
+
+             type="button"
+             class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
+           >
+           <i data-key=${key} data-id=${
         data[key].id
       } class="btn-repair fa-solid fa-pen-to-square flex items-center justify-center"></i>
-       </button>
-       <button
-         type="button"
-         class="btn-success ${
-           active ? `bg-emerald-700` : `bg-gray-400`
-         } flex h-10 w-10 items-center justify-center rounded-lg hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300"
-       >
-       <i data-title=${data[key].title} data-key=${key} data-id=${
+           </button>
+           <button
+             type="button"
+             class="btn-success ${
+               active ? `bg-emerald-700` : `bg-gray-400`
+             } flex h-10 w-10 items-center justify-center rounded-lg hover:bg-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-300"
+           >
+           <i data-title=${data[key].title} data-key=${key} data-id=${
         data[key].id
       } class="btn-success fa-regular fa-square-check flex items-center justify-center"></i>
-        
-       </button>
-     </div>
-   </div>`;
-    }
 
-    element.innerHTML = html;
+           </button>
+         </div>
+       </div>`;
+
+      element.innerHTML = html;
+    }
   } catch (err) {
     console.log(err);
   }
